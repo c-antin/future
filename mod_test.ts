@@ -50,6 +50,19 @@ Deno.test("then", () => {
   });
 });
 
+Deno.test("catch", () => {
+  let n = 0;
+  const future = new Future<number>((resolve) => {
+    n++;
+    console.log("executor", n);
+    resolve(n);
+  });
+  //`catch` does execute
+  future.catch((value) => {
+    assertEquals(value, 1);
+  });
+});
+
 Deno.test("inspect", async () => {
   const future = new Future<null>((resolve) => {
     resolve(null);
