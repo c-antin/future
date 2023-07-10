@@ -1,7 +1,7 @@
 import { assertEquals } from "https://deno.land/std@0.193.0/testing/asserts.ts";
 import { Future } from "./mod.ts";
 
-Deno.test("Future", async () => {
+Deno.test("await", async () => {
   let n = 0;
   const future = new Future<number>((resolve) => {
     n++;
@@ -33,7 +33,24 @@ Deno.test("Future", async () => {
   assertEquals(n, 3);
 });
 
-Deno.test("Deno.inspect", async () => {
+Deno.test("then", () => {
+  let n = 0;
+  const future = new Future<number>((resolve) => {
+    n++;
+    console.log("executor", n);
+    resolve(n);
+  });
+  //chaining does not execute twice, because `then` returns new Promise
+  future.then((value) => value).then((value) => {
+    assertEquals(value, 1);
+  });
+  //whereas this does execute again
+  future.then((value) => {
+    assertEquals(value, 2);
+  });
+});
+
+Deno.test("inspect", async () => {
   const future = new Future<null>((resolve) => {
     resolve(null);
   });
