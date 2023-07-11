@@ -1,6 +1,25 @@
 import { assertEquals } from "https://deno.land/std@0.193.0/testing/asserts.ts";
 import { Future } from "./mod.ts";
 
+Deno.test("promise", async () => {
+  let n = 0;
+  //promise runs immediately
+  const promise = new Promise<number>((resolve) => {
+    n++;
+    console.log("executor", n);
+    resolve(n);
+  });
+  console.log(promise);
+  assertEquals(n, 1);
+
+  {
+    const m = await promise;
+    assertEquals(m, 1);
+  }
+  console.log(promise);
+  assertEquals(n, 1);
+});
+
 Deno.test("await", async () => {
   let n = 0;
   const future = new Future<number>((resolve) => {
