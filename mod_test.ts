@@ -52,6 +52,24 @@ Deno.test("await", async () => {
   assertEquals(n, 3);
 });
 
+Deno.test("all", async () => {
+  let n = 0;
+  const future = new Future<number>((resolve) => {
+    n++;
+    console.log("executor", n);
+    resolve(n);
+  });
+  console.log(future);
+  assertEquals(n, 0);
+
+  const [m1, m2] = await Promise.all([
+    future,
+    future,
+  ]);
+  assertEquals(m1 + m2, 3);
+  assertEquals(n, 2);
+});
+
 Deno.test("then", () => {
   let n = 0;
   const future = new Future<number>((resolve) => {
