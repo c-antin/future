@@ -62,12 +62,13 @@ Deno.test("all", async () => {
   console.log(future);
   assertEquals(n, 0);
 
-  const [m1, m2] = await Promise.all([
+  const [m1, m2, m3] = await Promise.all([
+    future,
     future,
     future,
   ]);
-  assertEquals(m1 + m2, 3);
-  assertEquals(n, 2);
+  assertEquals(m1 + m2 + m3, 1 + 2 + 3);
+  assertEquals(n, 3);
 });
 
 Deno.test("then", () => {
